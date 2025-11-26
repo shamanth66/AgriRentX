@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Signup | Agri-RentX</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-light: #34d399;
+      --secondary: #8b5cf6;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    
+    .signup-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .signup-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      z-index: 0;
+    }
+    
+    .signup-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .signup-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    }
+    
+    .signup-body {
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .form-label i {
+      margin-right: 8px;
+      color: var(--primary);
+      width: 20px;
+    }
+    
+    .form-control {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      background: white;
+    }
+    
+    .btn-signup {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      color: white;
+      margin-top: 10px;
+    }
+    
+    .btn-signup:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+      color: white;
+    }
+    
+    .alert-custom {
+      border-radius: 12px;
+      border: none;
+      padding: 16px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    .alert-success {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      color: #065f46;
+      border-left: 4px solid var(--success);
+    }
+    
+    .alert-error {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
+    }
+    
+    .alert-info {
+      background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+    }
+    
+    .login-link {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .login-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    
+    .login-link a:hover {
+      color: var(--primary-dark);
+    }
+    
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: white;
+      font-size: 24px;
+    }
+    
+    .feature-text {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+    
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      color: #9ca3af;
+    }
+    
+    .password-requirements {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 5px;
+    }
+    
+    /* Animation for form elements */
+    .form-group {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+    .form-group:nth-child(4) { animation-delay: 0.4s; }
+    .form-group:nth-child(5) { animation-delay: 0.5s; }
+    .form-group:nth-child(6) { animation-delay: 0.6s; }
+    .form-group:nth-child(7) { animation-delay: 0.7s; }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .signup-body {
+        padding: 30px 20px;
+      }
+      
+      .signup-header {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="signup-container">
+        <!-- Header -->
+        <div class="signup-header">
+          <div class="feature-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h2 class="h3 fw-bold mb-2">Join Agri-RentX</h2>
+          <p class="mb-0 opacity-90">Create your account to rent agricultural equipment</p>
+        </div>
+        
+        <!-- Body -->
+        <div class="signup-body">
+          <!-- Messages -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-custom d-flex align-items-center">
+                <i class="fas 
+                  {% if message.tags == 'success' %}fa-check-circle text-success
+                  {% elif message.tags == 'error' %}fa-exclamation-circle text-danger
+                  {% else %}fa-info-circle text-info{% endif %} 
+                  me-3 fs-5"></i>
+                <div class="fw-medium">{{ message }}</div>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Features -->
+          <div class="feature-text">
+            <i class="fas fa-shield-alt text-success me-2"></i>
+            Secure & Easy Registration
+          </div>
+
+          <!-- Form -->
+          <form method="POST" novalidate>
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-user"></i>
+                Username
+              </label>
+              {{ form.username }}
+              {% if form.username.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.username.errors %}
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-envelope"></i>
+                Email Address
+              </label>
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.email.errors %}
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+            </div>
+
+            <!-- Phone Field -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-phone"></i>
+                Phone Number
+              </label>
+              {{ form.phone }}
+              {% if form.phone.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.phone.errors %}
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="input-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+            </div>
+
+            <!-- Address Field -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-map-marker-alt"></i>
+                Address
+              </label>
+              {{ form.address }}
+              {% if form.address.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.address.errors %}
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="input-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-lock"></i>
+                Password
+              </label>
+              {{ form.password }}
+              {% if form.password.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.password.errors %}
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <div class="password-requirements">
+                <i class="fas fa-info-circle me-1"></i>Must be at least 8 characters long
+              </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-lock"></i>
+                Confirm Password
+              </label>
+              {{ form.confirm_password }}
+              {% if form.confirm_password.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.confirm_password.errors %}
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+            </div>
+
+            <!-- Non-field errors -->
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger alert-custom">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {% for error in form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-signup w-100">
+              <i class="fas fa-user-plus me-2"></i>
+              Create Account
+            </button>
+          </form>
+
+          <!-- Login Link -->
+          <div class="login-link">
+            <p class="mb-0 text-muted">
+              Already have an account? 
+              <a href="{% url 'user_signin' %}">
+                <i class="fas fa-sign-in-alt me-1"></i>Sign In via OTP
+              </a>
+            </p>
+          </div>
+
+          <!-- Additional Info -->
+          <div class="row text-center mt-4">
+            <div class="col-4">
+              <div class="text-success">
+                <i class="fas fa-shield-alt fa-lg mb-2"></i>
+                <div class="small">Secure</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="text-primary">
+                <i class="fas fa-bolt fa-lg mb-2"></i>
+                <div class="small">Fast</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="text-warning">
+                <i class="fas fa-tractor fa-lg mb-2"></i>
+                <div class="small">Reliable</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add classes to form inputs
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+      input.classList.add('form-control');
+    });
+
+    // Add focus effects
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.classList.add('focused');
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.classList.remove('focused');
+      });
+    });
+
+    // Password strength indicator
+    const passwordInput = document.querySelector('input[name="password"]');
+    const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+    
+    if (passwordInput && confirmPasswordInput) {
+      confirmPasswordInput.addEventListener('input', function() {
+        const password = passwordInput.value;
+        const confirmPassword = this.value;
+        
+        if (confirmPassword && password !== confirmPassword) {
+          this.style.borderColor = '#ef4444';
+        } else {
+          this.style.borderColor = '';
+        }
+      });
+    }
+
+    // Add loading state to submit button
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function() {
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+      submitBtn.disabled = true;
+    });
+
+    // Real-time validation
+    const usernameInput = document.querySelector('input[name="username"]');
+    const emailInput = document.querySelector('input[name="email"]');
+    
+    if (usernameInput) {
+      usernameInput.addEventListener('blur', function() {
+        if (this.value.length < 3) {
+          this.style.borderColor = '#ef4444';
+        } else {
+          this.style.borderColor = '';
+        }
+      });
+    }
+    
+    if (emailInput) {
+      emailInput.addEventListener('blur', function() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(this.value)) {
+          this.style.borderColor = '#ef4444';
+        } else {
+          this.style.borderColor = '';
+        }
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

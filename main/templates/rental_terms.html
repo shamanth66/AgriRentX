@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Terms & Conditions - Agri-RentX</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --accent: #ff6b6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .terms-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .item-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary);
+        }
+        
+        .item-image {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .item-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .terms-content {
+            padding: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .terms-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .terms-section:hover {
+            transform: translateX(5px);
+        }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .terms-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .terms-list li {
+            padding: 12px 0 12px 40px;
+            position: relative;
+            color: #555;
+            line-height: 1.6;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .terms-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .terms-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .warning-card {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #ffc107;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.2);
+        }
+        
+        .warning-icon {
+            color: #856404;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .acceptance-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .form-check-input {
+            width: 22px;
+            height: 22px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .form-check-label {
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-accept {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-accept.enabled {
+            opacity: 1;
+            cursor: pointer;
+        }
+        
+        .btn-accept.enabled:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(108, 117, 125, 0.3);
+        }
+        
+        .footer-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        /* Custom Scrollbar */
+        .terms-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .terms-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .terms-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+        }
+        
+        .terms-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #6a4b8a 100%);
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            background: #e9ecef;
+            height: 6px;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 30px 20px;
+            }
+            
+            .item-card {
+                text-align: center;
+            }
+            
+            .item-image {
+                margin-bottom: 15px;
+            }
+            
+            .btn-accept, .btn-cancel {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="terms-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <i class="header-icon fas fa-file-contract"></i>
+        <h1 class="display-6 fw-bold mb-3">Rental Terms & Conditions</h1>
+        <p class="lead mb-0">Please read carefully before proceeding with your rental</p>
+    </div>
+
+    <!-- Item Information -->
+    <div class="item-card">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-image">
+                {% else %}
+                    <div class="item-image bg-light d-flex align-items-center justify-content-center">
+                        <i class="fas fa-tractor text-muted fa-3x"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <h2 class="h3 fw-bold text-dark mb-2">{{ item.name }}</h2>
+                <p class="text-muted mb-1"><i class="fas fa-tag me-2"></i><strong>Category:</strong> {{ item.category }}</p>
+                <p class="text-muted mb-2"><i class="fas fa-align-left me-2"></i><strong>Description:</strong> {{ item.description }}</p>
+            </div>
+            <div class="col-md-3 text-center text-md-end">
+                <div class="price-tag">
+                    <i class="fas fa-indian-rupee-sign me-1"></i>{{ item.price_per_day }} <small>/day</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="px-4">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="d-flex justify-content-between text-muted small">
+            <span>Reading Terms</span>
+            <span>Acceptance</span>
+            <span>Payment</span>
+        </div>
+    </div>
+
+    <!-- Terms Content -->
+    <div class="terms-content">
+        <div class="terms-section">
+            <div class="section-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-3">1. Rental Period & Usage</h3>
+            <ul class="terms-list">
+                <li>The rental period begins from the date of approval by the admin</li>
+                <li>Equipment must be returned in the same condition as received</li>
+                <li>Daily rental charges will be calculated from the pickup date</li>
+                <li>Late returns will incur additional charges at 150% of the daily rate</li>
+                <li>Equipment should only be used for agricultural purposes</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <div class="section-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-3">2. Payment Terms</h3>
+            <ul class="terms-list">
+                <li>An advance payment of 50% of the daily rental rate is required</li>
+                <li>The advance is non-refundable once the rental is approved</li>
+                <li>Full payment must be completed before equipment pickup</li>
+                <li>All payments are inclusive of applicable taxes</li>
+                <li>Payment can be made via UPI, Credit/Debit Card, or Net Banking</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <div class="section-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-3">3. Security & Responsibility</h3>
+            <ul class="terms-list">
+                <li>You are fully responsible for the equipment during the rental period</li>
+                <li>Any damage, loss, or theft must be reported immediately</li>
+                <li>You agree to pay the full replacement cost for lost equipment</li>
+                <li>Repairs for any damage will be charged at actual cost</li>
+                <li>Equipment should be stored securely when not in use</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <div class="section-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-3">4. Inspection & Maintenance</h3>
+            <ul class="terms-list">
+                <li>Equipment will be inspected before pickup and after return</li>
+                <li>Any pre-existing damage will be documented</li>
+                <li>Basic maintenance is the renter's responsibility</li>
+                <li>Do not attempt unauthorized repairs or modifications</li>
+                <li>Report any malfunction or issue immediately</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <div class="section-icon">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-3">5. Cancellation Policy</h3>
+            <ul class="terms-list">
+                <li>Cancellations before admin approval will get 100% refund</li>
+                <li>Cancellations after approval are subject to 50% cancellation fee</li>
+                <li>No refunds for cancellations after equipment pickup</li>
+                <li>Admin reserves the right to cancel any rental request</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <div class="section-icon">
+                <i class="fas fa-ban"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-3">6. Prohibited Activities</h3>
+            <ul class="terms-list">
+                <li>Sub-renting or lending equipment to third parties</li>
+                <li>Using equipment beyond its intended purpose</li>
+                <li>Operating equipment under the influence of alcohol/drugs</li>
+                <li>Removing or tampering with identification tags</li>
+                <li>Using equipment in violation of local laws or regulations</li>
+            </ul>
+        </div>
+
+        <!-- Important Notice -->
+        <div class="warning-card">
+            <div class="d-flex align-items-start">
+                <i class="warning-icon fas fa-exclamation-triangle"></i>
+                <div>
+                    <h4 class="h5 fw-bold text-warning mb-2">Important Notice</h4>
+                    <p class="text-warning mb-0">
+                        By accepting these terms, you acknowledge that you have read, understood, and agree to be bound by all the conditions mentioned above. Non-compliance may result in termination of rental privileges and legal action.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acceptance Section -->
+    <div class="acceptance-card mx-4">
+        <form method="post" action="{% url 'accept_terms' item.id %}" id="termsForm">
+            {% csrf_token %}
+            <div class="form-check d-flex align-items-center">
+                <input class="form-check-input" type="checkbox" id="acceptTerms" name="accept_terms" required>
+                <label class="form-check-label" for="acceptTerms">
+                    I have read, understood, and agree to all the terms and conditions mentioned above
+                </label>
+            </div>
+        </form>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="footer-section">
+        <div class="row">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <a href="{% url 'user_dashboard' %}" class="btn btn-cancel w-100">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                </a>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" form="termsForm" class="btn btn-accept w-100" id="acceptBtn" disabled>
+                    <i class="fas fa-lock me-2"></i> Accept & Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.getElementById('acceptTerms');
+        const acceptBtn = document.getElementById('acceptBtn');
+        const progressBar = document.getElementById('progressBar');
+        const termsContent = document.querySelector('.terms-content');
+        
+        // Checkbox functionality
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                acceptBtn.disabled = false;
+                acceptBtn.classList.add('enabled');
+            } else {
+                acceptBtn.disabled = true;
+                acceptBtn.classList.remove('enabled');
+            }
+        });
+        
+        // Progress bar based on scroll
+        termsContent.addEventListener('scroll', function() {
+            const scrollTop = termsContent.scrollTop;
+            const scrollHeight = termsContent.scrollHeight - termsContent.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = scrollPercentage + '%';
+        });
+        
+        // Add animation to terms sections on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.terms-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(section);
+        });
+    });
+</script>
+
+</body>
+</html>

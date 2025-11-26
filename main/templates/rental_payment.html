@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Agri-RentX</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%),
+                        url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .payment-container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .payment-content {
+            padding: 40px;
+        }
+        
+        .order-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            border-top: 2px solid var(--primary);
+            margin-top: 10px;
+            padding-top: 20px;
+        }
+        
+        .summary-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .summary-value {
+            color: #1e293b;
+            font-weight: 600;
+        }
+        
+        .total-value {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .qr-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 2px dashed #e2e8f0;
+        }
+        
+        .qr-container {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .instructions h5 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        
+        .instructions li {
+            color: #4b5563;
+            margin-bottom: 8px;
+        }
+        
+        .btn-pay {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
+            width: 100%;
+        }
+        
+        .btn-pay:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-cancel {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-cancel:hover {
+            background: #475569;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(100, 116, 139, 0.3);
+        }
+        
+        .payment-methods {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .method-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .method-item:hover {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+        
+        .method-item.active {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+        
+        .method-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            margin-right: 15px;
+        }
+        
+        .method-info {
+            flex: 1;
+        }
+        
+        .method-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        
+        .method-desc {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            border: 1px solid #bbf7d0;
+        }
+        
+        /* Animation for payment processing */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .processing {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .payment-content {
+                padding: 25px;
+            }
+            
+            .header-section {
+                padding: 30px 20px;
+            }
+            
+            .order-card, .qr-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <i class="header-icon fas fa-credit-card"></i>
+        <h1 class="display-6 fw-bold mb-3">Complete Payment</h1>
+        <p class="lead mb-0">Secure & Easy Payment Process</p>
+    </div>
+
+    <!-- Payment Content -->
+    <div class="payment-content">
+        <!-- Order Summary -->
+        <div class="order-card">
+            <div class="card-icon">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <h3 class="h4 fw-bold text-dark mb-4">Order Summary</h3>
+            
+            <div class="summary-item">
+                <span class="summary-label">Item Name:</span>
+                <span class="summary-value">{{ item.name }}</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Category:</span>
+                <span class="summary-value">{{ item.category }}</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Daily Rental Rate:</span>
+                <span class="summary-value">₹{{ item.price_per_day }}</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Advance Payment (50%):</span>
+                <span class="summary-value total-value">₹{{ advance_amount }}</span>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="payment-methods">
+            <h5 class="fw-bold mb-3">Select Payment Method</h5>
+            
+            <div class="method-item active">
+                <div class="method-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <div class="method-info">
+                    <div class="method-name">UPI QR Code</div>
+                    <div class="method-desc">Scan with any UPI app</div>
+                </div>
+                <i class="fas fa-check-circle text-success"></i>
+            </div>
+            
+          
+            
+            <!-- <div class="method-item">
+                <div class="method-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <div class="method-info">
+                    <div class="method-name">Credit/Debit Card</div>
+                    <div class="method-desc">Secure card payment</div>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- QR Code Section -->
+        <div class="qr-section">
+            <h4 class="fw-bold text-dark mb-3">Scan to Pay</h4>
+            <div class="qr-container">
+                <div id="qr-code"></div>
+            </div>
+            <p class="text-muted mb-0">Scan this QR code with PhonePe, GPay, or any UPI app</p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h5><i class="fas fa-info-circle me-2"></i>How to Pay</h5>
+            <ol>
+                <li>Open your UPI payment app (PhonePe, GPay, Paytm, etc.)</li>
+                <li>Tap on 'Scan QR Code' in the app</li>
+                <li>Point your camera at the QR code above</li>
+                <li>Confirm the payment of <strong>₹{{ advance_amount }}</strong></li>
+                <li>Click 'Confirm Payment' below after successful transaction</li>
+            </ol>
+        </div>
+
+        <!-- Security Badge -->
+        <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure Payment • SSL Encrypted</span>
+        </div>
+
+        <!-- Payment Form -->
+        <form method="post" action="{% url 'process_payment' rental.id %}" id="paymentForm">
+            {% csrf_token %}
+            <input type="hidden" name="payment_method" value="phonepe">
+            
+            <div class="row g-3 mt-4">
+                <div class="col-md-6">
+                    <a href="{% url 'user_dashboard' %}" class="btn btn-cancel">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-pay processing">
+                        <i class="fas fa-lock me-2"></i> Confirm Payment ₹{{ advance_amount }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Generate PhonePe UPI QR dynamically
+        var upiText = "upi://pay?pa={{ phonepe_vpa }}&pn={{ item.name }}&am={{ advance_amount }}&cu=INR";
+        new QRCode(document.getElementById("qr-code"), {
+            text: upiText,
+            width: 200,
+            height: 200,
+            colorDark: "#10b981",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Payment method selection
+        const methodItems = document.querySelectorAll('.method-item');
+        methodItems.forEach(item => {
+            item.addEventListener('click', function() {
+                methodItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Add animation to elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Animate cards on load
+        const animatedElements = document.querySelectorAll('.order-card, .qr-section, .instructions, .payment-methods');
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+        
+        // Form submission handling
+        const paymentForm = document.getElementById('paymentForm');
+        const payButton = paymentForm.querySelector('.btn-pay');
+        
+        paymentForm.addEventListener('submit', function(e) {
+            payButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+            payButton.disabled = true;
+        });
+    });
+</script>
+
+</body>
+</html>

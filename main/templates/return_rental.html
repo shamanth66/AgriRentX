@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Item - Agri-RentX</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80');
+            background-size: cover;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .return-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 40px auto;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .return-header {
+            background: linear-gradient(135deg, #10b981 0%, #8b5cf6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .return-content {
+            padding: 30px;
+        }
+        
+        .condition-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .condition-option:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .condition-option.selected {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .item-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="return-container">
+            <div class="return-header">
+                <h1><i class="fas fa-undo me-2"></i>Return Item</h1>
+                <p class="mb-0">Return your rented agricultural equipment</p>
+            </div>
+            
+            <div class="return-content">
+                <!-- Item Details -->
+                <div class="item-card">
+                    <div class="d-flex align-items-center">
+                        {% if rental.item.image %}
+                        <img src="{{ rental.item.image.url }}" alt="{{ rental.item.name }}" class="rounded me-3" width="80" height="80" style="object-fit: cover;">
+                        {% else %}
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center me-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-tractor text-muted fa-2x"></i>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <h5 class="fw-bold mb-1">{{ rental.item.name }}</h5>
+                            <p class="text-muted mb-1">{{ rental.item.category }}</p>
+                            <p class="text-muted mb-0">Rented on: {{ rental.request_date|date:"M d, Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Return Form -->
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Condition of Item</label>
+                        <div class="condition-options">
+                            <div class="condition-option" onclick="selectCondition('excellent')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="condition" value="excellent" id="condition1" required>
+                                    <label class="form-check-label fw-bold" for="condition1">
+                                        <i class="fas fa-check-circle text-success me-2"></i>Excellent
+                                    </label>
+                                    <p class="text-muted mb-0 mt-1">No visible damage, works perfectly</p>
+                                </div>
+                            </div>
+                            
+                            <div class="condition-option" onclick="selectCondition('good')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="condition" value="good" id="condition2" required>
+                                    <label class="form-check-label fw-bold" for="condition2">
+                                        <i class="fas fa-info-circle text-primary me-2"></i>Good
+                                    </label>
+                                    <p class="text-muted mb-0 mt-1">Minor wear and tear, fully functional</p>
+                                </div>
+                            </div>
+                            
+                            <div class="condition-option" onclick="selectCondition('damaged')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="condition" value="damaged" id="condition3" required>
+                                    <label class="form-check-label fw-bold" for="condition3">
+                                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>Damaged
+                                    </label>
+                                    <p class="text-muted mb-0 mt-1">Visible damage or malfunction</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="notes" class="form-label fw-bold">Additional Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="4" placeholder="Describe the condition, any issues encountered, or other relevant information..."></textarea>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Important:</strong> Please ensure the equipment is clean and all accessories are included before returning.
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-check me-2"></i>Confirm Return
+                        </button>
+                        <a href="{% url 'user_dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectCondition(value) {
+            // Remove selected class from all options
+            document.querySelectorAll('.condition-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Check the radio button
+            document.querySelector(`input[value="${value}"]`).checked = true;
+        }
+    </script>
+</body>
+</html>

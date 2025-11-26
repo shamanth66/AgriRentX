@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri-RentX | Smart Agri Equipment Renting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #28a745;
+            --primary-dark: #1e7e34;
+            --secondary: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Contact Header */
+        .contact-header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-item i {
+            font-size: 0.8rem;
+        }
+
+        /* Auth Header */
+        .auth-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .auth-links {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .auth-link {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .auth-link:hover {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .auth-divider {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        /* Custom hover effect for dropdown items */
+        .dropdown-item:hover {
+            background-color: var(--primary);
+            color: #fff;
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero section */
+        .hero-section {
+            background: linear-gradient(rgba(40, 167, 69, 0.85), rgba(30, 126, 52, 0.85)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section h1 {
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-hero {
+            background-color: var(--secondary);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            background-color: #e0a800;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 100px 0;
+            background-color: #fff;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            bottom: -10px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        /* Feature cards hover */
+        .feature-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            background: #fff;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: inline-block;
+            padding: 15px;
+            border-radius: 50%;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .feature-card h5 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Equipment Categories */
+        .categories-section {
+            padding: 100px 0;
+            background-color: #f8f9fa;
+        }
+
+        .category-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-content {
+            padding: 20px;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            padding: 100px 0;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+                        url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
+            background-size: cover;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-cta {
+            background-color: var(--secondary);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            background-color: #e0a800;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-links h5 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-links h5:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: -8px;
+            left: 0;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: #adb5bd;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-section {
+                padding: 80px 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .contact-info, .auth-links {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .auth-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- Contact Header -->
+<div class="contact-header">
+    <div class="container">
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>+91 9844567812</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>info@agrirentx.com</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Sira Gate, Tumkur</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auth Header -->
+<div class="auth-header">
+    <div class="container">
+        <div class="auth-links">
+            <a href="{% url 'user_signup'%}" class="auth-link">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+            <span class="auth-divider">|</span>
+            <a href="{% url 'user_signin'%}" class="auth-link">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <span class="auth-divider">|</span>
+            <a href="{%url 'admin_signin'%}" class="auth-link">
+                <i class="fas fa-cogs"></i> Admin
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold" href="/">
+        <i class="fas fa-tractor me-2"></i>AGRI-RENTX
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/">Home</a>
+        </li>
+
+        <!-- Category Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Category
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-tractor me-2"></i>Lawn & Gardening</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-tools me-2"></i>Hand Tools</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-tint me-2"></i>Earth Auger</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-seedling me-2"></i>Ploughs</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-wind me-2"></i>Seeders</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-spray-can me-2"></i>Sprayers</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-vial me-2"></i>Fertilizers</a></li>
+    <li><a class="dropdown-item" onclick="showSigninAlert()"><i class="fas fa-tools me-2"></i>Tools</a></li>
+</ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="{% url 'user_signin'%}">Shop Page</a></li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container hero-content">
+        <h1 class="fw-bold mb-3">Empowering Farmers Through Smart Equipment Rentals</h1>
+        <p class="lead mb-4">Rent or lease modern agricultural equipment easily and affordably. Join thousands of farmers who trust Agri-RentX for their farming needs.</p>
+        <a href="{% url 'user_signin'%}" class="btn btn-hero btn-lg">Get Started <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="text-center section-title text-success">Why Choose Agri-RentX?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card border-0 p-4 text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                    <h5>Easy Equipment Access</h5>
+                    <p>Find tractors, harvesters, and tools available nearby with just a few clicks. Our platform connects you with verified equipment owners.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card border-0 p-4 text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h5>Affordable Rentals</h5>
+                    <p>Flexible pricing plans that fit every farmer's needs and budget. Save up to 40% compared to purchasing equipment.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card border-0 p-4 text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h5>Digital Convenience</h5>
+                    <p>Book, manage, and pay directly from your smartphone or laptop. Get real-time updates and support when you need it.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-label">Happy Farmers</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">2,500+</div>
+                    <div class="stat-label">Equipment Listings</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">120+</div>
+                    <div class="stat-label">Cities Covered</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Equipment Categories -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="text-center section-title text-success">Equipment Categories</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://www.deere.co.in/assets/images/region-1/products/tractors/john-deere-e-series-cab.jpg')"></div>
+                    <div class="category-content">
+                        <h5>Tractors</h5>
+                        <p>Powerful tractors for all your farming needs. Available in various sizes and power ratings.</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://mahindrafarmmachinery.com/sites/default/files/2024-12/8.%20Combine%20Harvester%20Working%2C%20Uses%2C%20and%20Importance-min%20%281%29_0.jpg')"></div>
+                    <div class="category-content">
+                        <h5>Harvesters</h5>
+                        <p>Efficient harvesting equipment to maximize your crop yield and reduce labor costs.</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('data:image/jpeg;base64,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')"></div>
+                    <div class="category-content">
+                        <h5>Irrigation Systems</h5>
+                        <p>Modern irrigation solutions to ensure optimal water usage for your crops.</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Transform Your Farming Experience?</h2>
+        <p>Join thousands of farmers who are already benefiting from smart equipment rentals. Sign up today and get your first rental at 20% off!</p>
+        <a href="{% url 'user_signup'%}" class="btn btn-cta btn-lg">Sign Up Now <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 class="footer-links">
+                    <i class="fas fa-tractor me-2"></i>AGRI-RENTX
+                </h5>
+                <p>Empowering farmers through accessible, affordable, and modern agricultural equipment rentals.</p>
+                <div class="social-icons mt-4">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 mb-4">
+                <h5 class="footer-links">Quick Links</h5>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/equipment">Equipment</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 class="footer-links">Categories</h5>
+                <ul>
+                    <li><a href="/category/tractors">Tractors</a></li>
+                    <li><a href="/category/harvesters">Harvesters</a></li>
+                    <li><a href="/category/irrigation">Irrigation</a></li>
+                    <li><a href="/category/ploughs">Ploughs</a></li>
+                    <li><a href="/category/tools">Tools</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h5 class="footer-links">Contact Info</h5>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt me-2"></i> 123 Farm Street, Agri City</li>
+                    <li><i class="fas fa-phone me-2"></i> +1 234 567 8900</li>
+                    <li><i class="fas fa-envelope me-2"></i> info@agrirentx.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Agri-RentX | Empowering Farmers Worldwide</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('shadow');
+        } else {
+            navbar.classList.remove('shadow');
+        }
+    });
+</script>
+
+<script>
+function showSigninAlert() {
+    // Using SweetAlert for better looking alerts (if you have it)
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Sign In Required',
+            text: 'Please sign in first to view items in this category',
+            icon: 'info',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#10b981'
+        });
+    } else {
+        // Fallback to native alert
+        alert('Please sign in first to view items in this category');
+    }
+    return false;
+}
+</script>
+
+</body>
+</html>

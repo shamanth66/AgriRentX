@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Agri-RentX</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ff9900;
+            --primary-dark: #e68900;
+            --primary-light: #ffb84d;
+            --secondary: #146eb4;
+            --accent: #ff9900;
+            --danger: #ff3333;
+            --warning: #ff9900;
+            --info: #146eb4;
+            --success: #00a66c;
+            --dark: #232f3e;
+            --light: #fafafa;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+        
+        /* Amazon Style Header */
+        .amazon-header {
+            background: var(--dark);
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .amazon-nav {
+            background: #232f3e;
+            padding: 8px 0;
+            border-bottom: 1px solid #3a4553;
+        }
+        
+        .admin-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin: 20px auto;
+            overflow: hidden;
+            border: 1px solid #e7e7e7;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        
+        .admin-content {
+            padding: 25px;
+        }
+        
+        /* Amazon Style Cards */
+        .amazon-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e7e7e7;
+            transition: all 0.3s ease;
+        }
+        
+        .amazon-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e7e7e7;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        /* Amazon Style Tables */
+        .amazon-table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: white;
+            border: 1px solid #e7e7e7;
+        }
+        
+        .amazon-table thead th {
+            background: #fafafa;
+            color: var(--dark);
+            font-weight: 600;
+            border: none;
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 2px solid #e7e7e7;
+        }
+        
+        .amazon-table tbody tr {
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .amazon-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        .amazon-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+        
+        /* Status Badges - Amazon Style */
+        .amazon-badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge-pending {
+            background: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+        
+        .badge-approved {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        
+        .badge-rejected {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        
+        .badge-returned {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+        
+        .badge-damaged {
+            background: #fce4ec;
+            color: #ad1457;
+            border: 1px solid #f48fb1;
+        }
+
+        .badge-paid {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .badge-verified {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .badge-unverified {
+            background: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+
+        .badge-active {
+            background: #e1f5fe;
+            color: #0277bd;
+            border: 1px solid #4fc3f7;
+        }
+
+        .badge-refunded {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .badge-out-of-stock {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .badge-in-stock {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .badge-new {
+            background: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+        
+        /* Amazon Style Buttons */
+        .amazon-btn {
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 8px 16px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border: 1px solid;
+        }
+        
+        .btn-primary-amazon {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .btn-primary-amazon:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary-amazon {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        .btn-success-amazon {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .btn-danger-amazon {
+            background: #ff3333;
+            color: white;
+            border-color: #ff3333;
+        }
+
+        .btn-info-amazon {
+            background: #17a2b8;
+            color: white;
+            border-color: #17a2b8;
+        }
+
+        .btn-warning-amazon {
+            background: #ffc107;
+            color: black;
+            border-color: #ffc107;
+        }
+
+        .btn-refund {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-refund:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-outline-amazon {
+            background: transparent;
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .btn-outline-amazon:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* User Avatar */
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        /* Form Controls */
+        .amazon-form-control {
+            border-radius: 6px;
+            border: 1px solid #d5d9d9;
+            padding: 10px 12px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .amazon-form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+        }
+        
+        /* Damage Form */
+        .damage-form {
+            background: #fafafa;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid #e7e7e7;
+        }
+        
+        /* Item Cards - Amazon Style */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .item-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e7e7e7;
+            transition: all 0.3s ease;
+        }
+        
+        .item-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
+        }
+        
+        .item-image-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid #e7e7e7;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .item-card:hover .item-image {
+            transform: scale(1.05);
+        }
+        
+        .item-details {
+            padding: 16px;
+        }
+        
+        .item-price {
+            color: var(--success);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .item-category {
+            background: #e3f2fd;
+            color: var(--secondary);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .item-action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e7e7e7;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin: 0 auto 12px;
+            background: var(--light);
+        }
+        
+        .stat-users { color: var(--secondary); }
+        .stat-items { color: var(--primary); }
+        .stat-rentals { color: var(--success); }
+        .stat-aadhaar { color: #e65100; background: #fff3e0; }
+        .stat-notifications { color: #9c27b0; background: #f3e5f5; }
+        .stat-out-of-stock { color: #f44336; background: #ffebee; }
+        
+        /* Invoice Actions */
+        .invoice-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Document Preview */
+        .document-preview {
+            max-width: 150px;
+            border-radius: 6px;
+            border: 1px solid #e7e7e7;
+        }
+
+        .verification-section {
+            border-left: 4px solid var(--warning);
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 193, 7, 0.1) 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .verified-section {
+            border-left: 4px solid var(--success);
+            background: linear-gradient(135deg, rgba(0, 166, 108, 0.05) 0%, rgba(0, 166, 108, 0.1) 100%);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* Stock Alert Section */
+        .stock-alert-section {
+            border-left: 4px solid var(--danger);
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.05) 0%, rgba(244, 67, 54, 0.1) 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Return Status Styles */
+        .return-condition {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+        
+        .condition-excellent {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .condition-good {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .condition-damaged {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-process-return {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-process-return:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+
+        /* Refund Styles */
+        .refund-amount {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .penalty-amount {
+            color: #dc3545;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .refund-info {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 8px;
+            border-left: 3px solid #28a745;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .item-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .invoice-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .item-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Amazon Style Header -->
+<header class="amazon-header">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand d-flex align-items-center text-white fw-bold fs-4" href="#">
+                    <i class="fas fa-tractor me-2"></i>
+                    Agri-RentX <span class="badge bg-warning text-dark ms-2">Admin</span>
+                </a>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="user-avatar me-3">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <span class="text-white me-3 d-none d-md-block fw-medium">Welcome, {{ request.user.username }}</span>
+                <a class="btn btn-danger-amazon btn-sm" href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="amazon-nav">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <a href="#" class="text-white text-decoration-none me-4 fw-medium">
+                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+            </a>
+            <a href="{% url 'admin_analytics' %}" class="text-white text-decoration-none me-4">
+                <i class="fas fa-chart-bar me-1"></i> Analytics
+            </a>
+          
+        </div>
+    </div>
+</nav>
+
+<!-- Main Container -->
+<div class="container">
+    <div class="admin-container">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 fw-bold mb-2"><i class="fas fa-user-shield me-2"></i>Admin Dashboard</h1>
+                    <p class="mb-0 opacity-90">Manage users, items, and rental requests efficiently</p>
+                </div>
+                <div class="text-end">
+                    <div class="text-white opacity-75">Today</div>
+                    <div class="h5 mb-0 fw-bold">{{ now|date:"M d, Y" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <!-- Messages -->
+            {% if messages %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-custom d-flex align-items-center" role="alert">
+                        <i class="fas 
+                            {% if message.tags == 'success' %}fa-check-circle text-success
+                            {% elif message.tags == 'error' %}fa-exclamation-circle text-danger
+                            {% else %}fa-info-circle text-info{% endif %} 
+                            me-2 fs-5"></i>
+                        <div class="fw-medium">{{ message }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="fw-bold text-secondary">{{ users|length }}</h3>
+                    <p class="text-muted mb-0">Registered Users</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-items">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="fw-bold text-primary">{{ items|length }}</h3>
+                    <p class="text-muted mb-0">Agriculture Items</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-rentals">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3 class="fw-bold text-success">{{ rental_requests|length }}</h3>
+                    <p class="text-muted mb-0">Rental Requests</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-aadhaar">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h3 class="fw-bold text-warning">{{ pending_verifications|length }}</h3>
+                    <p class="text-muted mb-0">Pending Aadhaar</p>
+                </div>
+                <!-- NEW: Stock Alerts Stat Card -->
+                <div class="stat-card">
+                    <div class="stat-icon stat-out-of-stock">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="fw-bold text-danger">{{ out_of_stock_items|length }}</h3>
+                    <p class="text-muted mb-0">Out of Stock</p>
+                </div>
+                <!-- NEW: Notifications Stat Card -->
+                <div class="stat-card">
+                    <div class="stat-icon stat-notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="fw-bold text-purple">{{ pending_notifications_count }}</h3>
+                    <p class="text-muted mb-0">Pending Notifications</p>
+                </div>
+            </div>
+
+            <!-- Stock Alerts Section -->
+            {% if out_of_stock_items %}
+            <div class="amazon-card">
+                <div class="stock-alert-section">
+                    <h6 class="fw-bold text-danger mb-3">
+                        <i class="fas fa-exclamation-triangle me-1"></i> Stock Alerts - Out of Stock Items ({{ out_of_stock_items|length }})
+                    </h6>
+                    <div class="row">
+                        {% for item in out_of_stock_items %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="d-flex align-items-center p-3 bg-light rounded">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-tractor text-white"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium">{{ item.name }}</div>
+                                    <div class="small text-muted">{{ item.category }}</div>
+                                </div>
+                                <div>
+                                    <span class="amazon-badge badge-out-of-stock">
+                                        <i class="fas fa-times me-1"></i> Out of Stock
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Aadhaar Verification Requests Section -->
+            <div class="amazon-card">
+                <h2 class="h5 fw-bold section-title">
+                    <i class="fas fa-id-card me-2 text-warning"></i>Aadhaar Verification Management
+                </h2>
+                
+                <!-- Pending Verifications -->
+                <div class="verification-section mb-4">
+                    <h6 class="fw-bold text-warning mb-3">
+                        <i class="fas fa-clock me-1"></i> Pending Verification Requests ({{ pending_verifications|length }})
+                    </h6>
+                    {% if pending_verifications %}
+                    <div class="table-responsive">
+                        <table class="table amazon-table">
+                            <thead>
+                                <tr>
+                                    <th>User Details</th>
+                                    <th>Aadhaar Number</th>
+                                    <th>Documents</th>
+                                    <th>Submitted Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in pending_verifications %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-avatar me-3">
+                                                {{ user.username|first|upper }}
+                                            </div>
+                                            <div>
+                                                <div class="fw-medium">{{ user.username }}</div>
+                                                <small class="text-muted">{{ user.email }}</small>
+                                                <div class="small text-muted">{{ user.phone }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <code class="bg-light p-1 rounded">{{ user.aadhaar_number }}</code>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            {% if user.aadhaar_front %}
+                                                <a href="{{ user.aadhaar_front.url }}" target="_blank" class="btn btn-info-amazon amazon-btn btn-sm">
+                                                    <i class="fas fa-id-card me-1"></i> Front
+                                                </a>
+                                            {% else %}
+                                                <span class="text-muted small">No Front</span>
+                                            {% endif %}
+                                            {% if user.aadhaar_back %}
+                                                <a href="{{ user.aadhaar_back.url }}" target="_blank" class="btn btn-info-amazon amazon-btn btn-sm">
+                                                    <i class="fas fa-id-card me-1"></i> Back
+                                                </a>
+                                            {% else %}
+                                                <span class="text-muted small">No Back</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if user.aadhaar_verification_date %}
+                                            {{ user.aadhaar_verification_date|date:"M d, Y" }}
+                                        {% else %}
+                                            <span class="text-muted">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'verify_aadhaar' user.id %}" class="btn btn-success-amazon amazon-btn btn-sm" 
+                                               onclick="return confirm('Are you sure you want to verify this Aadhaar?')"
+                                               title="Verify Aadhaar">
+                                                <i class="fas fa-check me-1"></i> Verify
+                                            </a>
+                                            <a href="{% url 'reject_aadhaar' user.id %}" class="btn btn-danger-amazon amazon-btn btn-sm"
+                                               onclick="return confirm('Are you sure you want to reject this Aadhaar? This will delete uploaded documents.')"
+                                               title="Reject Aadhaar">
+                                                <i class="fas fa-times me-1"></i> Reject
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-check-circle text-muted fa-3x mb-3"></i>
+                        <p class="text-muted mb-0">No pending Aadhaar verification requests</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Verified Users -->
+                <div class="verified-section">
+                    <h6 class="fw-bold text-success mb-3">
+                        <i class="fas fa-check-circle me-1"></i> Verified Users ({{ verified_users|length }})
+                    </h6>
+                    {% if verified_users %}
+                    <div class="table-responsive">
+                        <table class="table amazon-table">
+                            <thead>
+                                <tr>
+                                    <th>User Details</th>
+                                    <th>Aadhaar Number</th>
+                                    <th>Verification Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in verified_users %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-avatar me-3">
+                                                {{ user.username|first|upper }}
+                                            </div>
+                                            <div>
+                                                <div class="fw-medium">{{ user.username }}</div>
+                                                <small class="text-muted">{{ user.email }}</small>
+                                                <div class="small text-muted">{{ user.phone }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <code class="bg-light p-1 rounded">{{ user.aadhaar_number }}</code>
+                                    </td>
+                                    <td>
+                                        {% if user.aadhaar_verification_date %}
+                                            {{ user.aadhaar_verification_date|date:"M d, Y" }}
+                                            <div class="small text-muted">{{ user.aadhaar_verification_date|timesince }} ago</div>
+                                        {% else %}
+                                            <span class="text-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="amazon-badge badge-verified">
+                                            <i class="fas fa-shield-check me-1"></i> Verified
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-users text-muted fa-3x mb-3"></i>
+                        <p class="text-muted mb-0">No verified users yet</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Registered Users Section -->
+            <div class="amazon-card">
+                <h2 class="h5 fw-bold section-title">
+                    <i class="fas fa-users me-2 text-primary"></i>Registered Users
+                </h2>
+                <div class="table-responsive">
+                    <table class="table amazon-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Aadhaar Status</th>
+                                <th>Account Status</th>
+                                <th>Wallet Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar me-3">
+                                            {{ user.username|first|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium">{{ user.username }}</div>
+                                            <small class="text-muted">{{ user.email }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ user.phone }}</td>
+                                <td class="text-truncate" style="max-width: 150px;">{{ user.address }}</td>
+                                <td>
+                                    {% if user.is_aadhaar_verified %}
+                                        <span class="amazon-badge badge-verified">
+                                            <i class="fas fa-check me-1"></i> Verified
+                                        </span>
+                                    {% else %}
+                                        <span class="amazon-badge badge-unverified">
+                                            <i class="fas fa-clock me-1"></i> Pending
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.status == 'approved' %}
+                                        <span class="amazon-badge badge-approved">Approved</span>
+                                    {% elif user.status == 'rejected' %}
+                                        <span class="amazon-badge badge-rejected">Rejected</span>
+                                    {% else %}
+                                        <span class="amazon-badge badge-pending">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-success">₹{{ user.wallet_balance }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{% url 'change_user_status' user.id 'approved' %}" class="btn btn-success-amazon amazon-btn btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                        <a href="{% url 'change_user_status' user.id 'rejected' %}" class="btn btn-danger-amazon amazon-btn btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add New Item Section -->
+            <div class="amazon-card">
+                <h2 class="h5 fw-bold section-title">
+                    <i class="fas fa-plus-circle me-2 text-success"></i>Add New Agriculture Item
+                </h2>
+                <form method="post" enctype="multipart/form-data" class="row g-3">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Item Name</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Category</label>
+                        {{ form.category }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-medium">Description</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Price per Day (₹)</label>
+                        {{ form.price_per_day }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Item Image</label>
+                        {{ form.image }}
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" name="add_item" class="btn btn-primary-amazon px-4">
+                            <i class="fas fa-plus me-2"></i> Add New Item
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Agriculture Items Section - Amazon Style Grid -->
+            <div class="amazon-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="h5 fw-bold section-title mb-0">
+                        <i class="fas fa-tractor me-2 text-warning"></i>All Agriculture Items
+                    </h2>
+                    <div class="text-muted">{{ items|length }} items</div>
+                </div>
+                
+                <div class="item-grid">
+                    {% for item in items %}
+                    <div class="item-card">
+                        <div class="item-image-container">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-image">
+                            {% else %}
+                                <div class="d-flex flex-column align-items-center justify-content-center text-muted">
+                                    <i class="fas fa-tractor fa-3x mb-2"></i>
+                                    <small>No Image</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="item-details">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="fw-bold text-dark mb-1">{{ item.name }}</h5>
+                                <div class="d-flex flex-column align-items-end gap-1">
+                                    <span class="item-category">{{ item.category }}</span>
+                                    {% if item.is_new and item.new_until > now %}
+                                        <span class="amazon-badge badge-new">
+                                            <i class="fas fa-star me-1"></i> New
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-3">{{ item.description|truncatewords:12 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="item-price">₹{{ item.price_per_day }}/day</div>
+                                <div>
+                                    {% if item.is_available %}
+                                        <span class="amazon-badge badge-in-stock">
+                                            <i class="fas fa-check me-1"></i> In Stock
+                                        </span>
+                                    {% else %}
+                                        <span class="amazon-badge badge-out-of-stock">
+                                            <i class="fas fa-times me-1"></i> Out of Stock
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- NEW: Edit and Delete Buttons -->
+                            <div class="item-actions">
+                                <a href="{% url 'change_item_availability' item.id %}" class="btn btn-outline-amazon item-action-btn">
+                                    {% if item.is_available %}
+                                        <i class="fas fa-toggle-on me-1"></i> Unavailable
+                                    {% else %}
+                                        <i class="fas fa-toggle-off me-1"></i> Available
+                                    {% endif %}
+                                </a>
+                                <a href="{% url 'edit_item' item.id %}" class="btn btn-info-amazon item-action-btn" title="Edit Item">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </a>
+                                <a href="{% url 'delete_item' item.id %}" class="btn btn-danger-amazon item-action-btn" title="Delete Item">
+                                    <i class="fas fa-trash me-1"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Rental Requests Section -->
+            <div class="amazon-card">
+                <h2 class="h5 fw-bold section-title">
+                    <i class="fas fa-clipboard-list me-2 text-info"></i>Rental Requests & Refunds
+                </h2>
+                <div class="table-responsive">
+                    <table class="table amazon-table">
+                        <thead>
+                            <tr>
+                                <th>User & Item</th>
+                                <th>Request Date</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Return Status</th>
+                                <th>Refund Status</th>
+                                <th>Damage Report</th>
+                                <th>Actions</th>
+                                <th>Invoices</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rental in rental_requests %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar me-3">
+                                            {{ rental.user.username|first|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium">{{ rental.user.username }}</div>
+                                            <small class="text-muted">{{ rental.item.name }}</small>
+                                            <div class="small text-muted">
+                                                Daily Rate: ₹{{ rental.item.price_per_day }}
+                                            </div>
+                                            <div class="small text-muted">
+                                                Advance: ₹{{ rental.calculate_advance_amount }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ rental.request_date|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if rental.status == 'approved' %}
+                                        <span class="amazon-badge badge-approved">Approved</span>
+                                    {% elif rental.status == 'rejected' %}
+                                        <span class="amazon-badge badge-rejected">Rejected</span>
+                                    {% elif rental.status == 'returned' %}
+                                        <span class="amazon-badge badge-returned">Returned</span>
+                                    {% elif rental.status == 'damaged' %}
+                                        <span class="amazon-badge badge-damaged">Damaged</span>
+                                    {% else %}
+                                        <span class="amazon-badge badge-pending">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if rental.terms_accepted and rental.advance_paid %}
+                                        <span class="amazon-badge badge-paid">
+                                            <i class="fas fa-check me-1"></i> Paid
+                                        </span>
+                                        <div class="small text-success mt-1">
+                                            ₹{{ rental.calculate_advance_amount }}
+                                        </div>
+                                    {% else %}
+                                        <span class="amazon-badge badge-pending">
+                                            <i class="fas fa-clock me-1"></i> Waiting
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if rental.is_returned %}
+                                        <div class="text-center">
+                                            <span class="amazon-badge badge-returned mb-1">
+                                                <i class="fas fa-check me-1"></i> Returned
+                                            </span>
+                                            {% if rental.return_condition %}
+                                            <div class="return-condition condition-{{ rental.return_condition }}">
+                                                {{ rental.return_condition|title }}
+                                            </div>
+                                            {% endif %}
+                                            <small class="text-muted d-block mt-1">
+                                                {{ rental.return_date|date:"M d, Y" }}
+                                            </small>
+                                            {% if rental.return_condition == 'damaged' and not rental.admin_return_notes %}
+                                                <a href="{% url 'admin_process_return' rental.id %}" class="btn btn-process-return btn-sm mt-1">
+                                                    <i class="fas fa-clipboard-check me-1"></i> Process
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    {% elif rental.status == 'approved' %}
+                                        <span class="amazon-badge badge-active">
+                                            <i class="fas fa-clock me-1"></i> In Use
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if rental.refund_processed %}
+                                        <div class="text-center">
+                                            <span class="amazon-badge badge-refunded mb-1">
+                                                <i class="fas fa-check me-1"></i> Refunded
+                                            </span>
+                                            <div class="refund-amount">₹{{ rental.refund_amount }}</div>
+                                            <small class="text-muted d-block">
+                                                {{ rental.refund_date|date:"M d" }}
+                                            </small>
+                                        </div>
+                                    {% elif rental.is_returned and not rental.refund_processed %}
+                                        {% with refund_amount=rental.calculate_refund_amount %}
+                                            {% if refund_amount > 0 %}
+                                                <div class="text-center">
+                                                    <span class="amazon-badge badge-pending mb-1">
+                                                        <i class="fas fa-clock me-1"></i> Refund Due
+                                                    </span>
+                                                    <div class="refund-amount">₹{{ refund_amount }}</div>
+                                                    {% if rental.penalty_amount %}
+                                                        <div class="penalty-amount small">-₹{{ rental.penalty_amount }} penalty</div>
+                                                    {% endif %}
+                                                    <a href="{% url 'process_refund' rental.id %}" 
+                                                       class="btn btn-refund btn-sm mt-1"
+                                                       onclick="return confirm('Process ₹{{ refund_amount }} refund to {{ rental.user.username }}\\'s wallet?')"
+                                                       title="Process 50% Refund">
+                                                        <i class="fas fa-money-bill-wave me-1"></i> Refund
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                <div class="text-center">
+                                                    <span class="text-muted small">No refund due</span>
+                                                    {% if rental.penalty_amount %}
+                                                        <div class="penalty-amount small">Penalty: ₹{{ rental.penalty_amount }}</div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form method="post" action="{% url 'update_rental_damage' rental.id %}" class="damage-form">
+                                        {% csrf_token %}
+                                        <div class="mb-2">
+                                            <textarea name="damage_report" class="amazon-form-control" rows="2" placeholder="Damage details">{{ rental.damage_report }}</textarea>
+                                        </div>
+                                        <div class="mb-2">
+                                            <input type="number" name="penalty_amount" step="0.01" class="amazon-form-control" placeholder="Penalty amount" value="{{ rental.penalty_amount }}">
+                                        </div>
+                                        <div class="mb-2">
+                                            <select name="status" class="amazon-form-control">
+                                                <option value="pending" {% if rental.status == "pending" %}selected{% endif %}>Pending</option>
+                                                <option value="approved" {% if rental.status == "approved" %}selected{% endif %}>Approved</option>
+                                                <option value="rejected" {% if rental.status == "rejected" %}selected{% endif %}>Rejected</option>
+                                                <option value="returned" {% if rental.status == "returned" %}selected{% endif %}>Returned</option>
+                                                <option value="damaged" {% if rental.status == "damaged" %}selected{% endif %}>Damaged</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary-amazon w-100 btn-sm">
+                                            <i class="fas fa-save me-1"></i> Update
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column gap-2">
+                                        {% if rental.terms_accepted and rental.advance_paid and rental.status != 'approved' and not rental.is_returned %}
+                                            <a href="{% url 'change_rental_status' rental.id 'approved' %}" class="btn btn-success-amazon amazon-btn btn-sm">
+                                                <i class="fas fa-check me-1"></i> Approve
+                                            </a>
+                                        {% elif rental.status == 'approved' and not rental.is_returned %}
+                                            <span class="btn btn-outline-amazon amazon-btn btn-sm disabled">
+                                                <i class="fas fa-check me-1"></i> Active
+                                            </span>
+                                        {% else %}
+                                            <span class="btn btn-outline-amazon amazon-btn btn-sm disabled">
+                                                <i class="fas fa-clock me-1"></i> Waiting
+                                            </span>
+                                        {% endif %}
+                                        <a href="{% url 'change_rental_status' rental.id 'rejected' %}" class="btn btn-danger-amazon amazon-btn btn-sm">
+                                            <i class="fas fa-times me-1"></i> Reject
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="invoice-actions">
+                                        {% if rental.terms_accepted and rental.advance_paid %}
+                                            <a href="{% url 'download_invoice' rental.id %}" class="btn btn-info-amazon amazon-btn btn-sm" target="_blank">
+                                                <i class="fas fa-download me-1"></i> Download
+                                            </a>
+                                            <a href="{% url 'send_invoice_email' rental.id %}" class="btn btn-warning-amazon amazon-btn btn-sm">
+                                                <i class="fas fa-paper-plane me-1"></i> Email
+                                            </a>
+                                        {% else %}
+                                            <span class="btn btn-outline-amazon amazon-btn btn-sm disabled">
+                                                <i class="fas fa-file-invoice me-1"></i> Pending Payment
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add Amazon-style form controls
+        const formInputs = document.querySelectorAll('input, select, textarea');
+        formInputs.forEach(input => {
+            if (!input.classList.contains('amazon-form-control')) {
+                input.classList.add('amazon-form-control');
+            }
+        });
+
+        // Add animations
+        const cards = document.querySelectorAll('.amazon-card, .stat-card, .item-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 + index * 50);
+        });
+
+        // Add success message handling for various actions
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('invoice_sent') === 'true') {
+            showToast('Invoice sent successfully!', 'success');
+        }
+        if (urlParams.get('invoice_downloaded') === 'true') {
+            showToast('Invoice downloaded successfully!', 'info');
+        }
+        if (urlParams.get('aadhaar_verified') === 'true') {
+            showToast('Aadhaar verified successfully!', 'success');
+        }
+        if (urlParams.get('aadhaar_rejected') === 'true') {
+            showToast('Aadhaar rejected successfully!', 'warning');
+        }
+        if (urlParams.get('return_processed') === 'true') {
+            showToast('Return processed successfully!', 'success');
+        }
+        if (urlParams.get('refund_processed') === 'true') {
+            showToast('Refund processed successfully!', 'success');
+        }
+        if (urlParams.get('availability_updated') === 'true') {
+            showToast('Item availability updated successfully!', 'success');
+        }
+
+        // Add confirmation for Aadhaar actions
+        const verifyButtons = document.querySelectorAll('a[href*="verify-aadhaar"]');
+        verifyButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!confirm('Are you sure you want to verify this Aadhaar?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        const rejectButtons = document.querySelectorAll('a[href*="reject-aadhaar"]');
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!confirm('Are you sure you want to reject this Aadhaar? This will delete uploaded documents.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Add confirmation for return processing
+        const processReturnButtons = document.querySelectorAll('.btn-process-return');
+        processReturnButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!confirm('Are you sure you want to process this return? You can add penalty charges and notes.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Add confirmation for refund processing
+        const refundButtons = document.querySelectorAll('.btn-refund');
+        refundButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const refundAmount = button.closest('td').querySelector('.refund-amount').textContent;
+                if (!confirm(`Process ${refundAmount} refund to user's wallet?`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Add confirmation for item availability toggle
+        const availabilityButtons = document.querySelectorAll('a[href*="change_item_availability"]');
+        availabilityButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const itemName = button.closest('.item-card').querySelector('h5').textContent;
+                const currentStatus = button.querySelector('i').classList.contains('fa-toggle-on') ? 'available' : 'unavailable';
+                const newStatus = currentStatus === 'available' ? 'unavailable' : 'available';
+                
+                if (!confirm(`Are you sure you want to mark "${itemName}" as ${newStatus}?`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // NEW: Add confirmation for item deletion
+        const deleteButtons = document.querySelectorAll('a[href*="delete_item"]');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const itemName = button.closest('.item-card').querySelector('h5').textContent;
+                if (!confirm(`Are you sure you want to delete "${itemName}"? This action cannot be undone.`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // NEW: Add confirmation for item editing
+        const editButtons = document.querySelectorAll('a[href*="edit_item"]');
+        editButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const itemName = button.closest('.item-card').querySelector('h5').textContent;
+                if (!confirm(`Edit details for "${itemName}"?`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+
+    function showToast(message, type) {
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        toast.style.top = '20px';
+        toast.style.right = '20px';
+        toast.style.zIndex = '9999';
+        toast.style.minWidth = '300px';
+        toast.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(toast);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 5000);
+    }
+</script>
+
+</body>
+</html>

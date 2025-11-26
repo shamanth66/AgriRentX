@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Agri-RentX Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #ff9900;
+            --secondary: #146eb4;
+            --success: #00a66c;
+            --dark: #232f3e;
+        }
+        
+        .amazon-header {
+            background: var(--dark);
+            padding: 12px 0;
+        }
+        
+        .amazon-nav {
+            background: #232f3e;
+            padding: 8px 0;
+            border-bottom: 1px solid #3a4553;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .amazon-btn {
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 8px 16px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border: 1px solid;
+        }
+        
+        .btn-primary-amazon {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .btn-danger-amazon {
+            background: #ff3333;
+            color: white;
+            border-color: #ff3333;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Amazon Style Header -->
+<header class="amazon-header">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand d-flex align-items-center text-white fw-bold fs-4" href="#">
+                    <i class="fas fa-tractor me-2"></i>
+                    Agri-RentX <span class="badge bg-warning text-dark ms-2">Analytics</span>
+                </a>
+            </div>
+            <div class="d-flex align-items-center">
+                <a class="btn btn-primary-amazon me-2" href="{% url 'admin_dashboard' %}">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                </a>
+                <a class="btn btn-danger-amazon btn-sm" href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="amazon-nav">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <a href="{% url 'admin_dashboard' %}" class="text-white text-decoration-none me-4 fw-medium">
+                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+            </a>
+            <a href="{% url 'admin_analytics' %}" class="text-white text-decoration-none me-4">
+                <i class="fas fa-chart-bar me-1"></i> Analytics
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-chart-bar me-2"></i>Analytics Dashboard</h1>
+        <div class="text-muted">Last updated: {{ now|date:"M d, Y H:i" }}</div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-users fa-2x text-primary"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Total Users</h5>
+                        <h2 class="text-primary mb-0">{{ total_users }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="border-left-color: var(--secondary);">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-tools fa-2x text-info"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Total Items</h5>
+                        <h2 class="text-info mb-0">{{ total_items }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="border-left-color: var(--success);">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-clipboard-list fa-2x text-success"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Total Rentals</h5>
+                        <h2 class="text-success mb-0">{{ total_rentals }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="border-left-color: #ff3333;">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-rupee-sign fa-2x text-danger"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Total Revenue</h5>
+                        <h2 class="text-danger mb-0">₹{{ total_revenue|floatformat:2 }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5><i class="fas fa-chart-pie me-2"></i>Rental Status Distribution</h5>
+                <canvas id="rentalStatusChart" height="250"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5><i class="fas fa-chart-pie me-2"></i>User Status Distribution</h5>
+                <canvas id="userStatusChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Stats -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="chart-container">
+                <h5><i class="fas fa-money-bill-wave me-2"></i>Payment Statistics</h5>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="p-3">
+                            <h3 class="text-success">{{ approved_rentals }}</h3>
+                            <small class="text-muted">Approved Rentals</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3">
+                            <h3 class="text-warning">{{ pending_rentals }}</h3>
+                            <small class="text-muted">Pending Rentals</small>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="p-3 border-top">
+                            <h4 class="text-danger">{{ pending_payments }}</h4>
+                            <small class="text-muted">Pending Payments</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="chart-container">
+                <h5><i class="fas fa-tags me-2"></i>Equipment Categories</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Items</th>
+                                <th>Total Rentals</th>
+                                <th>Popularity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in category_stats %}
+                            <tr>
+                                <td>{{ stat.category|default:"Uncategorized" }}</td>
+                                <td>{{ stat.count }}</td>
+                                <td>{{ stat.total_rentals }}</td>
+                                <td>
+                                    {% widthratio stat.total_rentals total_rentals 100 as popularity %}
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" style="width: {{ popularity }}%"></div>
+                                    </div>
+                                    <small>{{ popularity }}%</small>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">No category data available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="chart-container">
+                <h5><i class="fas fa-list me-2"></i>Recent Rental Activity</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User</th>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Price/Day</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rental in recent_rentals %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px; font-size: 12px;">
+                                            {{ rental.user.username|first|upper }}
+                                        </div>
+                                        {{ rental.user.username }}
+                                    </div>
+                                </td>
+                                <td>{{ rental.item.name }}</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">{{ rental.item.category }}</span>
+                                </td>
+                                <td>₹{{ rental.item.price_per_day }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if rental.status == 'approved' %}bg-success
+                                        {% elif rental.status == 'rejected' %}bg-danger
+                                        {% elif rental.status == 'returned' %}bg-info
+                                        {% elif rental.status == 'damaged' %}bg-warning
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ rental.status|title }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if rental.advance_paid %}
+                                        <span class="badge bg-success">Paid</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ rental.request_date|date:"M d, Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">No recent rental activity</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Rental Status Chart
+    const rentalCtx = document.getElementById('rentalStatusChart').getContext('2d');
+    const rentalChart = new Chart(rentalCtx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                {% for status in rental_status %}
+                    '{{ status.status|title }}'{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ],
+            datasets: [{
+                data: [
+                    {% for status in rental_status %}
+                        {{ status.count }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                backgroundColor: ['#00a66c', '#ff9900', '#ff3333', '#146eb4', '#663399', '#ff6b6b']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // User Status Chart
+    const userCtx = document.getElementById('userStatusChart').getContext('2d');
+    const userChart = new Chart(userCtx, {
+        type: 'pie',
+        data: {
+            labels: [
+                {% for status in user_status %}
+                    '{{ status.status|title }}'{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ],
+            datasets: [{
+                data: [
+                    {% for status in user_status %}
+                        {{ status.count }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                backgroundColor: ['#00a66c', '#ff9900', '#ff3333', '#146eb4']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Add some animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
+
+</body>
+</html>
